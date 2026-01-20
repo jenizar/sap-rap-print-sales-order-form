@@ -1,0 +1,24 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Sales Order APP'
+//@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity YC_SOHDR 
+  provider contract transactional_query
+as projection on YI_SOHDR
+
+{
+    key SONumber,
+        ClientName,
+        ClientAddr,
+        InvDate,
+        Currency,
+        TotAmt,
+        //LocalCreatedBy,
+        //LocalCreatedAt,
+        //LocalLastChangedBy,
+        //LocalLastChangedAt,
+        //LastChangedAt,
+        /* Associations */
+        _Vbap : redirected to composition child YC_SOITM
+}
+
