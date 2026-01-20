@@ -1,0 +1,138 @@
+CLASS LHC_VBAK DEFINITION INHERITING FROM CL_ABAP_BEHAVIOR_HANDLER.
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR Vbak RESULT result.
+
+    METHODS print_soform FOR MODIFY
+      IMPORTING keys FOR ACTION YI_SOHDR~print_soform.
+ENDCLASS.
+
+CLASS LHC_VBAK IMPLEMENTATION.
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD print_soform.
+
+  DATA: lo_http_client TYPE REF TO if_http_client,
+        lv_service TYPE string,
+        lr_json_deserializer type ref to cl_trex_json_deserializer,
+        lv_json_payload TYPE string,
+        lv_result TYPE string.
+
+  DATA : gt_soitm TYPE TABLE OF YTBSOITM.
+
+  TYPES : BEGIN OF ty_gab,
+           sonumber TYPE ytbsohdr-vbeln,
+           clientname TYPE ytbsohdr-name1,
+           clientaddr TYPE ytbsohdr-addrs,
+           invdate TYPE ytbsohdr-erdat,
+           currhdr TYPE ytbsohdr-waers,
+           totalamt TYPE ytbsohdr-netwr,
+           description TYPE ytbsoitm-maktx,
+           quantity TYPE ytbsoitm-menge,
+           currunit TYPE ytbsoitm-waers,
+           amtunit TYPE ytbsoitm-netwr,
+           currsubt TYPE ytbsoitm-twaers,
+           subtotal TYPE ytbsoitm-tnetwr,
+          END OF ty_gab.
+
+  DATA : gt_data TYPE TABLE OF ty_gab,
+         gs_data TYPE ty_gab.
+
+    READ ENTITY IN LOCAL MODE YI_SOHDR
+       ALL FIELDS WITH CORRESPONDING #( keys )
+         RESULT DATA(it_data).
+
+   LOOP AT it_data INTO DATA(wa_data).
+     SELECT * FROM YTBSOITM INTO TABLE gt_soitm WHERE vbeln = wa_data-sonumber.
+   ENDLOOP.
+
+   LOOP AT gt_soitm INTO DATA(wa_soitm).
+     READ TABLE it_data INTO DATA(wa_hdr) WITH KEY sonumber = wa_soitm-vbeln.
+     gs_data-sonumber = wa_hdr-sonumber.
+     gs_data-clientname = wa_hdr-ClientName.
+     gs_data-clientaddr = wa_hdr-ClientAddr.
+     gs_data-invdate = wa_hdr-InvDate.
+     gs_data-currhdr = wa_hdr-Currency.
+     gs_data-totalamt = wa_hdr-totamt.
+     gs_data-description = wa_soitm-maktx.
+     gs_data-quantity = wa_soitm-menge.
+     gs_data-currunit = wa_soitm-waers.
+     gs_data-amtunit = wa_soitm-netwr.
+     gs_data-currsubt = wa_soitm-twaers.
+     gs_data-subtotal = wa_soitm-tnetwr.
+     APPEND gs_data TO gt_data.
+   ENDLOOP.
+
+   lv_service = 'http://192.168.0.18:5000/printso'.
+
+     CALL METHOD cl_http_client=>create_by_url(
+       EXPORTING
+         url                = lv_service
+       IMPORTING
+         client             = lo_http_client
+       EXCEPTIONS
+         argument_not_found = 1
+         plugin_not_active  = 2
+         internal_error     = 3
+       OTHERS             = 4 ).
+
+*** Call the following method to autheticate the user/password and client for the remote connection.
+    CALL METHOD LO_HTTP_CLIENT->AUTHENTICATE(
+       EXPORTING
+        CLIENT = '001'
+        USERNAME = 'DEVELOPER'
+        PASSWORD = 'ABAPtr2023#00'
+        LANGUAGE = ''
+        ).
+
+" 2. Set the HTTP request method to POST
+lo_http_client->request->set_method(
+  EXPORTING
+    method = if_http_entity=>co_request_method_post
+).
+
+" 3. Set the Content-Type header to application/json
+lo_http_client->request->set_content_type(
+  EXPORTING
+    content_type = if_rest_media_type=>gc_appl_json " Or 'application/json'
+).
+
+******
+
+" 4. Prepare your JSON payload (Example)
+* Serialize the internal table to a JSON string
+/UI2/CL_JSON=>serialize(
+  EXPORTING
+    data        = gt_data               " Data to serialize (internal table)
+    pretty_name = 'L' "/UI2/CL_JSON=>pretty_mode-low_case " Optional: formats field names as low_case
+  RECEIVING
+    r_json      = lv_json_payload                " The resulting JSON string
+).
+**lv_json_payload = '{"key": "value", "another_key": 123}'. " Replace with actual JSON
+
+" 5. Set the JSON data in the request body
+lo_http_client->request->set_cdata(
+  EXPORTING
+    data = lv_json_payload
+).
+
+**** Send the request
+     lo_http_client->send(
+       EXCEPTIONS
+         http_communication_failure = 1
+         http_invalid_state         = 2 ).
+
+*** Receive the respose
+     lo_http_client->receive(
+        EXCEPTIONS
+          http_communication_failure = 1
+          http_invalid_state         = 2
+          http_processing_failed     = 3 ).
+
+*** Read the result
+     CLEAR lv_result.
+      lv_result = lo_http_client->response->get_cdata( ).
+  ENDMETHOD.
+ENDCLASS.
