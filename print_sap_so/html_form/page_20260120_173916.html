@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sales Order Form</title>
+	<style>
+/*
+  Common invoice styles. These styles will work in a browser or using the HTML
+  to PDF endpoint.
+*/
+
+body {
+  font-size: 16px;
+  max-width: 800px;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);  
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;      
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr td {
+  padding: 0;
+}
+
+table tr td:last-child {
+  text-align: right;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.right {
+  text-align: right;
+}
+
+.large {
+  font-size: 1.75em;
+}
+
+.total {
+  font-weight: bold;
+  color: #fb7578;
+}
+
+.logo-container {
+  margin: 0 0 10px 0;
+}
+
+.invoice-info-container {
+  font-size: 0.875em;
+}
+.invoice-info-container td {
+  padding: 4px 0;
+}
+
+.client-name {
+  font-size: 1.5em;
+  vertical-align: top;
+}
+
+.line-items-container {
+  margin: 70px 0;
+  font-size: 0.875em;
+}
+
+.line-items-container th {
+  text-align: left;
+  color: #999;
+  border-bottom: 2px solid #ddd;
+  padding: 10px 0 15px 0;
+  font-size: 0.75em;
+  text-transform: uppercase;
+}
+
+.line-items-container th:last-child {
+  text-align: right;
+}
+
+.line-items-container td {
+  padding: 15px 0;
+}
+
+.line-items-container tbody tr:first-child td {
+  padding-top: 25px;
+}
+
+.line-items-container.has-bottom-border tbody tr:last-child td {
+  padding-bottom: 25px;
+  border-bottom: 2px solid #ddd;
+}
+
+.line-items-container.has-bottom-border {
+  margin-bottom: 0;
+}
+
+.line-items-container th.heading-quantity {
+  width: 50px;
+}
+.line-items-container th.heading-price {
+  text-align: right;
+  width: 80px;
+}
+.line-items-container th.heading-subtotal {
+  width: 80px;
+}
+.line-items-container th.heading-description {
+  width: 150px;
+}
+
+.payment-info {
+  width: 38%;
+  font-size: 0.75em;
+  line-height: 1.5;
+}
+
+.footer {
+  margin-top: 100px;
+}
+
+.footer-thanks {
+  font-size: 1.125em;
+}
+
+.footer-thanks img {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.footer-info {
+  float: right;
+  margin-top: 5px;
+  font-size: 0.75em;
+  color: #ccc;
+}
+
+.footer-info span {
+  padding: 0 5px;
+  color: black;
+}
+
+.footer-info span:last-child {
+  padding-right: 0;
+}
+
+.page-container {
+  display: none;
+}	
+	</style>	
+        </head>		
+<div class="logo-container"><img style="height: 168px;"src="https://github.com/jenizar/sap-odata-node-js-crud-app/blob/main/images/logocomp.png?raw=true "/></div>
+<p style="text-align: right; font-size: 14px;">Invoice No: <strong>3000000002</strong></p>
+<tr></tr>
+<p style="text-align: right; font-size: 14px;">Invoice Date: <strong>20/01/2026</strong></p>
+<table class="invoice-info-container">
+<tbody>
+<tr>
+<td class="client-name">Harmony Electrics Co</td>
+<td>Denmax Computers</td>
+</tr>
+<tr>
+<td>Yusan Plaza, 7 Marina Street, Bangkok</td><td> 123 Malibu Street</td>
+</tr>
+<tr>
+<td></td>
+<td>Minnesota MN, 55401</td>
+</tr>
+<tr>
+<td></td>  
+<td>info@denmax.com</td>
+</tr>
+</tbody>
+</table>
+<table class="line-items-container">
+<thead>
+<tr>
+<th class="heading-quantity">Qty</th>
+<th class="heading-quantity">&nbsp;</th>
+<th class="heading-description">Description</th>
+<th class="heading-price">&nbsp;</th>
+<th class="heading-subtotal">Currency</th>
+<th class="heading-price">&nbsp;</th>
+<th class="heading-subtotal">Price</th>
+<th class="heading-price">&nbsp;</th>
+<th class="heading-subtotal">Subtotal</th>
+</tr>
+</thead>
+<tbody>
+  	
+<tr>
+<td>1.0</td>
+<td>&nbsp;</td>
+<td>ASUS ROG Zephyrus G14 (2026) GU405</td>
+<td>&nbsp;</td>
+<td>USD</td>
+<td class="right">&nbsp;</td>
+<td>3000.0</td>
+<td class="right">&nbsp;</td>
+<td class="bold">3000.0</td>
+</tr>
+	
+<tr>
+<td>1.0</td>
+<td>&nbsp;</td>
+<td>HP Laptop 14 inch 14-ep1113TU,</td>
+<td>&nbsp;</td>
+<td>USD</td>
+<td class="right">&nbsp;</td>
+<td>2500.0</td>
+<td class="right">&nbsp;</td>
+<td class="bold">2500.0</td>
+</tr>
+	
+<tr>
+<td>1.0</td>
+<td>&nbsp;</td>
+<td>ACER PREDATOR TRITON 14 AI</td>
+<td>&nbsp;</td>
+<td>USD</td>
+<td class="right">&nbsp;</td>
+<td>4300.0</td>
+<td class="right">&nbsp;</td>
+<td class="bold">4300.0</td>
+</tr>
+
+</tbody>
+</table>
+<table class="line-items-container has-bottom-border">
+<thead>
+<tr>
+<th>Payment Info</th>
+<th>Due By</th>
+<th>Total Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="payment-info">
+<div>Account No: <strong>123567744</strong></div>
+<div>Routing No: <strong>120000547</strong></div>
+</td>
+<td class="large">20/02/2026</td>
+<td class="large total">9800.0</td>
+</tr>
+</tbody>
+</table>
+<div class="footer">
+<div class="footer-info">info@denmax.com | 777 888 9999 | denmax.com</div>
+<div class="footer-thanks"><img src="https://github.com/anvilco/html-pdf-invoice-template/raw/main/img/heart.png" alt="heart" />Thank you!</div>
+</div>
+</html>
