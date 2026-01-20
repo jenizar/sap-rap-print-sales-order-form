@@ -1,0 +1,69 @@
+//@Metadata.layer: layer
+@Metadata.layer: #CUSTOMER
+@UI: { 
+        headerInfo: { 
+                        typeName: 'SO_Detail', typeNamePlural: 'Sales Order',
+                        title: { type: #STANDARD, label: 'Sales Order', value: 'SONumber'  }
+                    }
+                                          
+}
+
+annotate entity YC_SOHDR
+    with 
+{
+
+
+  @EndUserText.label: 'Sales Order'
+  @UI.lineItem: [{ position: 10, type: #FOR_ACTION, label: 'Print Sales Order Form', dataAction: 'print_soform' }]
+  @UI.selectionField: [{ position: 10 }]
+    @UI.facet: [{   //id : 'SO_Details', 
+                    purpose: #STANDARD, 
+                    type: #IDENTIFICATION_REFERENCE,
+                    label: 'General data',
+                    position: 10
+                },                               
+                
+                { 
+                    //id : 'SO_ITEM', 
+                    purpose: #STANDARD, 
+                    type: #LINEITEM_REFERENCE,
+                    label: 'Items',
+                    position: 20,
+                    targetElement: '_Vbap'
+                }
+                ]      
+
+  @UI.identification: [{ position: 10 }]
+  SONumber;
+
+  @EndUserText.label: 'Client Name'
+  @UI.lineItem: [ { position: 20 } ]
+  @UI.identification: [{ position: 20 }]
+  @UI.selectionField: [{ position: 20 }]
+  ClientName;
+
+  @EndUserText.label: 'Address'
+  @UI.lineItem: [ { position: 30 } ]
+  @UI.identification: [{ position: 30 }]
+  @UI.selectionField: [{ position: 30 }]
+  ClientAddr;
+
+  @EndUserText.label: 'Invoice Date'
+  @UI.lineItem: [ { position: 40 } ]
+  @UI.identification: [{ position: 40 }]
+  @UI.selectionField: [{ position: 40 }]
+  InvDate;
+
+  @EndUserText.label: 'Currency'
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.identification: [{ position: 50 }]
+  @UI.selectionField: [{ position: 50 }]
+  Currency;
+
+  @EndUserText.label: 'Total Amount'
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.identification: [{ position: 60 }]
+  @UI.selectionField: [{ position: 60 }]
+  TotAmt; 
+   
+}  
