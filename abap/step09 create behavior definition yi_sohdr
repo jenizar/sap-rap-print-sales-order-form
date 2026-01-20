@@ -1,0 +1,71 @@
+managed implementation in class zbp_i_sohdr unique;
+//strict ( 2 );
+
+define behavior for YI_SOHDR alias Vbak
+persistent table ytbsohdr
+lock master
+authorization master ( instance )
+//etag master LastChangedAt
+{
+  create;
+  update;
+  delete;
+  field ( mandatory : create, readonly : update ) SONumber;
+  field ( mandatory ) TotAmt, Currency;
+  field ( readonly ) LocalCreatedBy, LocalCreatedAt, LocalLastChangedAt, LocalLastChangedBy, LastChangedAt;
+  association _Vbap { create; }
+
+  action print_soform;
+
+  //mapping all field from YTBSOHDR to YI_SOHDR
+  mapping for YTBSOHDR corresponding
+    {
+      SONumber           = vbeln;
+      ClientName         = name1;
+      ClientAddr         = addrs;
+      InvDate            = erdat;
+      TotAmt             = netwr;
+      Currency           = waers;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+    }
+}
+
+define behavior for YI_SOITM alias Vbap //alias <alias_name>
+persistent table ytbsoitm
+lock dependent by _Vbak
+//authorization dependent by _Vbak
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) SONumber;
+  field ( mandatory ) Description, QtyUnit, Qty, AmtPerQtyUnit, AmtPerQty, AmtTotUnit, AmtTot;
+
+  field ( mandatory : create, readonly : update ) ItemNumber;
+
+  field ( readonly ) LocalCreatedBy, LocalCreatedAt, LocalLastChangedAt, LocalLastChangedBy, LastChangedAt;
+  association _Vbak;
+
+  //mapping all field from YTBSOITM to YI_SOITM
+  mapping for YTBSOITM corresponding
+    {
+      SONumber           = vbeln;
+      ItemNumber         = posnr;
+      Description        = maktx;
+      QtyUnit            = meins;
+      Qty                = menge;
+      AmtPerQty          = netwr;
+      AmtPerQtyUnit      = waers;
+      AmtTot             = tnetwr;
+      AmtTotUnit         = twaers;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+    }
+}
