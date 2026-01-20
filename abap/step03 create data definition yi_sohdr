@@ -1,0 +1,27 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Sales Order Header View'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity YI_SOHDR as select from ytbsohdr
+composition [0..*] of YI_SOITM as _Vbap
+{
+    key vbeln as SONumber,
+        name1 as ClientName,
+        addrs as ClientAddr,
+        erdat as InvDate,    
+        waers as Currency,
+        @Semantics.amount.currencyCode: 'Currency'
+        netwr as TotAmt,
+        @Semantics.user.createdBy: true
+        local_created_by as LocalCreatedBy,
+        @Semantics.systemDateTime.createdAt: true
+        local_created_at as LocalCreatedAt,
+        @Semantics.user.lastChangedBy: true
+        local_last_changed_by as LocalLastChangedBy,
+        @Semantics.systemDateTime.localInstanceLastChangedAt: true 
+        local_last_changed_at as LocalLastChangedAt,
+        @Semantics.systemDateTime.lastChangedAt: true
+        last_changed_at as LastChangedAt,
+        _Vbap // Make association public
+    
+}
+
