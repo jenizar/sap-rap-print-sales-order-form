@@ -1,0 +1,5 @@
+@EndUserText.label: 'Sales Order Service Def.'
+define service YSD_SO_SRV {
+  expose YC_SOHDR as Vbak;
+  expose YC_SOITM as Vbap;
+}
