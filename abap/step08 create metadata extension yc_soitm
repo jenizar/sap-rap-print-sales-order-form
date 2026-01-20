@@ -1,0 +1,64 @@
+//@Metadata.layer: layer
+@Metadata.layer: #CUSTOMER
+annotate entity YC_SOITM
+    with 
+{
+  @UI.facet: [{ //id : 'SO_Details_items',
+          purpose: #STANDARD,
+          type: #IDENTIFICATION_REFERENCE,
+          label: 'General Data',
+          position: 10
+       }]
+
+  @UI.hidden: true
+  SONumber;
+  
+  @EndUserText.label: 'Item Number'
+  @UI.lineItem: [ { position: 10 } ]
+  @UI.identification: [{ position: 10 }]
+  @UI.selectionField: [{ position: 10 }]
+  ItemNumber;
+  
+  @EndUserText.label: 'Description'
+  @UI.lineItem: [ { position: 20 } ]
+  @UI.identification: [{ position: 20 }]
+  @UI.selectionField: [{ position: 20 }]
+  Description;
+   
+  @EndUserText.label: 'Quantity'
+  @UI.lineItem: [ { position: 30 } ]
+  @UI.identification: [{ position: 30 }]
+  @UI.selectionField: [{ position: 30 }]
+  Qty;
+  /*
+  @EndUserText.label: 'Quantity Unit'
+  @UI.lineItem: [ { position: 40 } ]
+  @UI.identification: [{ position: 40 }]
+  @UI.selectionField: [{ position: 40 }]
+  QtyUnit;
+  */
+  @EndUserText.label: 'Amount Per Quantity'
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.identification: [{ position: 50 }]
+  @UI.selectionField: [{ position: 50 }]
+  AmtPerQty;
+/*  
+  @EndUserText.label: 'Amount Per Quantity Unit'
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.identification: [{ position: 60 }]
+  @UI.selectionField: [{ position: 60 }]
+  AmtPerQtyUnit;
+*/  
+  @EndUserText.label: 'Total Amount'
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.identification: [{ position: 70 }]
+  @UI.selectionField: [{ position: 70 }]
+  AmtTot;
+/*  
+  @EndUserText.label: 'Total Amount Unit'
+  @UI.lineItem: [ { position: 80 } ]
+  @UI.identification: [{ position: 80 }]
+  @UI.selectionField: [{ position: 80 }]
+  AmtTotUnit;
+*/   
+}
