@@ -1,0 +1,32 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Sales Order Item View'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity YI_SOITM as select from ytbsoitm
+association to parent YI_SOHDR as _Vbak
+    on $projection.SONumber = _Vbak.SONumber     
+{
+    key vbeln as SONumber,
+    key posnr as ItemNumber,
+        maktx as Description,
+        meins as QtyUnit,
+        @Semantics.quantity.unitOfMeasure: 'QtyUnit'
+        menge as Qty,
+        waers as AmtPerQtyUnit,
+        @Semantics.amount.currencyCode: 'AmtPerQtyUnit'
+        netwr as AmtPerQty,
+        twaers as AmtTotUnit,
+        @Semantics.amount.currencyCode: 'AmtTotUnit'
+        tnetwr as AmtTot,
+        @Semantics.user.createdBy: true
+        local_created_by as LocalCreatedBy,
+        @Semantics.systemDateTime.createdAt: true
+        local_created_at as LocalCreatedAt,
+        @Semantics.user.lastChangedBy: true
+        local_last_changed_by as LocalLastChangedBy,
+        @Semantics.systemDateTime.localInstanceLastChangedAt: true 
+        local_last_changed_at as LocalLastChangedAt,
+        @Semantics.systemDateTime.lastChangedAt: true
+        last_changed_at as LastChangedAt,
+        _Vbak // Make association public
+}
+
