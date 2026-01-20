@@ -1,0 +1,22 @@
+@EndUserText.label : 'Sales Order Header'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ytbsohdr {
+
+  key client            : abap.clnt not null;
+  key vbeln             : abap.char(10) not null;
+  name1                 : abap.char(35);
+  addrs                 : abap.char(100);
+  erdat                 : abap.char(10);
+  waers                 : abap.cuky;
+  @Semantics.amount.currencyCode : 'ytbsohdr.waers'
+  netwr                 : abap.curr(15,2);
+  local_created_by      : abp_creation_user;
+  local_created_at      : abp_creation_tstmpl;
+  local_last_changed_by : abp_locinst_lastchange_user;
+  local_last_changed_at : abp_locinst_lastchange_tstmpl;
+  last_changed_at       : abp_lastchange_tstmpl;
+
+}
