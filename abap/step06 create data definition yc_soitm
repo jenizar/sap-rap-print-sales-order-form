@@ -1,0 +1,24 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Sales Order Item APP'
+//@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define view entity YC_SOITM as projection on YI_SOITM
+{
+    key SONumber,
+    key ItemNumber,
+        Description,
+        QtyUnit,
+        Qty,
+        AmtPerQtyUnit,
+        AmtPerQty,
+        AmtTotUnit,
+        AmtTot,
+        //LocalCreatedBy,
+        //LocalCreatedAt,
+        //LocalLastChangedBy,
+        //LocalLastChangedAt,
+        //LastChangedAt,
+        /* Associations */
+        _Vbak : redirected to parent YC_SOHDR
+}
+
